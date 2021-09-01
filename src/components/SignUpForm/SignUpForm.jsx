@@ -7,7 +7,7 @@ function SignUpForm({onSubmit, checkSSN}){
     const [ssn, setSsn] = useState("");
     const [offers, setOffers] = useState(true);
     const [newsletter, setNewsletter] = useState(true);
-    const [error, setError] = useState({ssn:{valid: true, msg:"A Brazilian SSN must have exactly 11 numbers!"}})
+    const [error, setError] = useState({ssn:{valid: true, msg:""}})
 
     return(
         <form 
@@ -37,7 +37,7 @@ function SignUpForm({onSubmit, checkSSN}){
             label="Last name" 
             variant="outlined"
             fullWidth
-            required={false}
+            required={true}
             margin="normal"/>
             
             <TextField id="ssn" 
@@ -54,7 +54,7 @@ function SignUpForm({onSubmit, checkSSN}){
             label="Social Security Number" 
             variant="outlined"
             fullWidth
-            required={false}
+            required={true}
             margin="normal"/>
             
             <FormControlLabel
