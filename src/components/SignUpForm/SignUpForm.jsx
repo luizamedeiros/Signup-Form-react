@@ -81,7 +81,7 @@ function SignUpForm({onSubmit, checkSSN}){
                 color="primary"
             />}
             label="Newsletter"/>
-
+            
             <Button variant='contained' color='primary' type="submit">Sign up</Button>
         </form>
     );
