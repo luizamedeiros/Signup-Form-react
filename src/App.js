@@ -12,7 +12,7 @@ class App extends Component{
                 component='h1'
                 align='center'
                 >Sign Up Form</Typography>
-                <SignUpForm onSubmit={onFormSubmit}/>
+                <SignUpForm onSubmit={onFormSubmit} checkSSN={checkSSN}/>
             </Container>
         );
     }
@@ -20,5 +20,14 @@ class App extends Component{
 
 function onFormSubmit(data){
     console.log(data);
+}
+
+function checkSSN(ssn){
+    if(ssn.length !== 11){
+        return{valid:false, msg:"SSN must have exactly 11 numbers."}
+    }
+    else{
+        return{valid:true, msg:""}
+    }
 }
 export default App;

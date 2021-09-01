@@ -1,12 +1,13 @@
 import React,{useState} from 'react';
 import {Button, TextField, Switch, FormControlLabel} from '@material-ui/core';
 
-function SignUpForm({onSubmit}){
+function SignUpForm({onSubmit, checkSSN}){
     const [name, setName] = useState("");
     const [lastname, setLastname] = useState("");
     const [ssn, setSsn] = useState("");
     const [offers, setOffers] = useState(true);
     const [newsletter, setNewsletter] = useState(true);
+    const [error, setError] = useState({ssn:{valid: true, msg:"A Brazilian SSN must have exactly 11 numbers!"}})
 
     return(
         <form 
@@ -44,6 +45,12 @@ function SignUpForm({onSubmit}){
             onChange={(e)=>{
                 setSsn(e.target.value)
             }}
+            onBlur={(e)=>{
+                const validSSN = checkSSN(ssn);
+                setError({ssn: validSSN})
+            }}
+            error={!error.ssn.valid}
+            helperText={error.ssn.msg}
             label="Social Security Number" 
             variant="outlined"
             fullWidth
