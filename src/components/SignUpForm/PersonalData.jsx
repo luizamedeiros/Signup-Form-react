@@ -13,7 +13,7 @@ function PersonalData({onFormSubmit, checkSSN}){
         <form 
         onSubmit={(e)=>{
             e.preventDefault();
-            onFormSubmit();
+            onFormSubmit({name, lastname, ssn, offers, newsletter});
         }}
         >
             <TextField

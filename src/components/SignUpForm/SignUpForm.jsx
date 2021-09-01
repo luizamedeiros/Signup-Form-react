@@ -1,32 +1,43 @@
-import React,{Fragment, useState} from 'react';
-import {Typography} from '@material-ui/core';
+import React, {useState, useEffect} from 'react';
 import PersonalData from './PersonalData';
 import UserData from './UserData';
-import DeliveryData from './DeliveryData'
+import DeliveryData from './DeliveryData';
+import {Typography, Stepper, StepLabel, Step} from '@material-ui/core';
 
 function SignUpForm({onFormSubmit, checkSSN}){
     const[stage, setStage] = useState(0);
+    const[capturedData, setCapturedData] = useState({});
+    useEffect(()=>{
+        if (stage === formPages.length-1){
+            onFormSubmit(capturedData);
+    }})
+
+    const formPages=[
+        <UserData onFormSubmit={captureData}/>,
+        <PersonalData onFormSubmit={captureData} checkSSN={checkSSN}/>,
+        <DeliveryData onFormSubmit={captureData}/>,
+        <Typography variant="h5" align="center">Thanks for signing up!</Typography>
+    ];
+
+    function captureData(data){
+        setCapturedData({...capturedData, ...data});
+        nextStage();
+    }
+
     function nextStage(){
         setStage(stage+1);
     }
 
-    function currentFormPage(stage){
-        switch(stage){
-            case 0:
-                return <UserData onFormSubmit={nextStage}/>;
-            case 1:
-                return <PersonalData onFormSubmit={nextStage} checkSSN={checkSSN}/>;
-            case 2:
-                return <DeliveryData onFormSubmit={onFormSubmit}/>;
-            default:
-                return <Typography>Oops!</Typography>
-        }
-    }
-
     return(
-        <Fragment>
-            {currentFormPage(stage)}
-        </Fragment>
+        <>
+            <Stepper activeStep={stage}>
+                <Step><StepLabel>Login</StepLabel></Step>
+                <Step><StepLabel>Personal</StepLabel></Step>
+                <Step><StepLabel>Delivery</StepLabel></Step>
+                <Step><StepLabel>You're done!</StepLabel></Step>
+            </Stepper>
+            {formPages[stage]}
+        </>
     );
 }
 
