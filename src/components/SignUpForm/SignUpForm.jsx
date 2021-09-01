@@ -1,90 +1,33 @@
-import React,{useState} from 'react';
-import {Button, TextField, Switch, FormControlLabel} from '@material-ui/core';
+import React,{Fragment, useState} from 'react';
+import {Typography} from '@material-ui/core';
+import PersonalData from './PersonalData';
+import UserData from './UserData';
+import DeliveryData from './DeliveryData'
 
-function SignUpForm({onSubmit, checkSSN}){
-    const [name, setName] = useState("");
-    const [lastname, setLastname] = useState("");
-    const [ssn, setSsn] = useState("");
-    const [offers, setOffers] = useState(true);
-    const [newsletter, setNewsletter] = useState(true);
-    const [error, setError] = useState({ssn:{valid: true, msg:""}})
+function SignUpForm({onFormSubmit, checkSSN}){
+    const[stage, setStage] = useState(0);
+    function nextStage(){
+        setStage(stage+1);
+    }
+
+    function currentFormPage(stage){
+        switch(stage){
+            case 0:
+                return <UserData onFormSubmit={nextStage}/>;
+            case 1:
+                return <PersonalData onFormSubmit={nextStage} checkSSN={checkSSN}/>;
+            case 2:
+                return <DeliveryData onFormSubmit={onFormSubmit}/>;
+            default:
+                return <Typography>Oops!</Typography>
+        }
+    }
 
     return(
-        <form 
-        onSubmit={(e)=>{
-            e.preventDefault();
-            onSubmit({name,lastname,ssn,offers,newsletter})
-        }}
-        >
-            <TextField
-            value={name}
-            onChange={(e)=> {
-                setName(e.target.value);
-            }} 
-            id="name" 
-            label="Name" 
-            variant="outlined"
-            fullWidth
-            required={true}
-            margin="normal"/>
-
-            <TextField
-            value={lastname}
-            onChange={(e)=> {
-                setLastname(e.target.value);
-            }}  
-            id="lastname" 
-            label="Last name" 
-            variant="outlined"
-            fullWidth
-            required={true}
-            margin="normal"/>
-            
-            <TextField id="ssn" 
-            value={ssn}
-            onChange={(e)=>{
-                setSsn(e.target.value)
-            }}
-            onBlur={(e)=>{
-                const validSSN = checkSSN(ssn);
-                setError({ssn: validSSN})
-            }}
-            error={!error.ssn.valid}
-            helperText={error.ssn.msg}
-            label="Social Security Number" 
-            variant="outlined"
-            fullWidth
-            required={true}
-            margin="normal"/>
-            
-            <FormControlLabel
-            control={
-                <Switch
-                checked={offers}
-                onChange={(e) => {
-                    setOffers(e.target.checked);
-                }}
-                name="Offers"
-                color="primary"
-            />}
-            label="Offers"/>
-
-
-            <FormControlLabel
-            control={
-                <Switch
-                checked={newsletter}
-                onChange={(e) => {
-                    setNewsletter(e.target.checked);
-                }}
-                name="Newsletter"
-                color="primary"
-            />}
-            label="Newsletter"/>
-            
-            <Button variant='contained' color='primary' type="submit">Sign up</Button>
-        </form>
+        <Fragment>
+            {currentFormPage(stage)}
+        </Fragment>
     );
 }
- 
+
 export default SignUpForm;

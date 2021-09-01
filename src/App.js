@@ -14,7 +14,7 @@ class App extends Component{
                 py={400}
                 >Sign Up Form</Typography>
                 </Box>
-                <SignUpForm onSubmit={onFormSubmit} checkSSN={checkSSN}/>
+                <SignUpForm onFormSubmit={onFormSubmit} checkSSN={checkSSN}/>
             </Container>
         );
     }
