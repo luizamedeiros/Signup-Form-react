@@ -12,9 +12,13 @@ class App extends Component{
                 component='h1'
                 align='center'
                 >Sign Up Form</Typography>
-                <SignUpForm/>
+                <SignUpForm onSubmit={onFormSubmit}/>
             </Container>
         );
     }
+}
+
+function onFormSubmit(data){
+    console.log(data);
 }
 export default App;

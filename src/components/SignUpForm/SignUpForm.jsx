@@ -1,10 +1,25 @@
-import React from 'react';
+import React,{useState} from 'react';
 import {Button, TextField, Switch, FormControlLabel} from '@material-ui/core';
 
-function SignUpForm(){
+function SignUpForm({onSubmit}){
+    const [name, setName] = useState("");
+    const [lastname, setLastname] = useState("");
+    const [ssn, setSsn] = useState("");
+    const [offers, setOffers] = useState(true);
+    const [newsletter, setNewsletter] = useState(true);
+
     return(
-        <form>
-            <TextField 
+        <form 
+        onSubmit={(e)=>{
+            e.preventDefault();
+            onSubmit({name,lastname,ssn,offers,newsletter})
+        }}
+        >
+            <TextField
+            value={name}
+            onChange={(e)=> {
+                setName(e.target.value);
+            }} 
             id="name" 
             label="Name" 
             variant="outlined"
@@ -12,7 +27,11 @@ function SignUpForm(){
             required={true}
             margin="normal"/>
 
-            <TextField 
+            <TextField
+            value={lastname}
+            onChange={(e)=> {
+                setLastname(e.target.value);
+            }}  
             id="lastname" 
             label="Last name" 
             variant="outlined"
@@ -21,6 +40,10 @@ function SignUpForm(){
             margin="normal"/>
             
             <TextField id="ssn" 
+            value={ssn}
+            onChange={(e)=>{
+                setSsn(e.target.value)
+            }}
             label="Social Security Number" 
             variant="outlined"
             fullWidth
@@ -30,8 +53,11 @@ function SignUpForm(){
             <FormControlLabel
             control={
                 <Switch
+                checked={offers}
+                onChange={(e) => {
+                    setOffers(e.target.checked);
+                }}
                 name="Offers"
-                defaultChecked
                 color="primary"
             />}
             label="Offers"/>
@@ -40,8 +66,11 @@ function SignUpForm(){
             <FormControlLabel
             control={
                 <Switch
+                checked={newsletter}
+                onChange={(e) => {
+                    setNewsletter(e.target.checked);
+                }}
                 name="Newsletter"
-                defaultChecked
                 color="primary"
             />}
             label="Newsletter"/>
