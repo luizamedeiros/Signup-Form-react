@@ -1,16 +1,21 @@
-import React from 'react';
+import React, {useContext, useState} from 'react';
 import {TextField, Button} from '@material-ui/core'
-import { useState } from 'react';
+import FormValidations from "../../contexts/FormValidations";
+import useErrors from '../../hooks/useErrors';
 
 function UserData({onFormSubmit}){
-    const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const validate = useContext(FormValidations);
+    const [errors, validateInput, noErrors] = useErrors(validate);
 
     return(
         <form
         onSubmit={(e)=>{
             e.preventDefault();
-            onFormSubmit({email, password})
+            if(noErrors()){
+                onFormSubmit({email, password})
+            }
         }}
         >
             <TextField
@@ -18,8 +23,9 @@ function UserData({onFormSubmit}){
             onChange={(e)=>{
                 setEmail(e.target.value);
             }} 
+            name="email"
             id='email'
-            label="Email"
+            label="Email" 
             type="text"
             margin="normal"
             variant="outlined"
@@ -32,6 +38,10 @@ function UserData({onFormSubmit}){
             onChange={(e)=>{
                 setPassword(e.target.value);
             }} 
+            onBlur={validateInput}
+            error={!errors.password.valid}
+            helperText={errors.password.msg}
+            name="password"
             id="password"
             type="password"
             label="Password"

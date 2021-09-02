@@ -1,19 +1,25 @@
-import React,{useState} from 'react';
+import React,{useState, useContext} from 'react';
 import {Button, TextField, Switch, FormControlLabel} from '@material-ui/core';
+import FormValidations from "../../contexts/FormValidations";
+import useErrors from '../../hooks/useErrors';
 
-function PersonalData({onFormSubmit, checkSSN}){
+
+function PersonalData({onFormSubmit}){
     const [name, setName] = useState("");
     const [lastname, setLastname] = useState("");
     const [ssn, setSsn] = useState("");
     const [offers, setOffers] = useState(true);
     const [newsletter, setNewsletter] = useState(true);
-    const [error, setError] = useState({ssn:{valid: true, msg:""}})
-
+    const validate = useContext(FormValidations);
+    const [errors, validateInput, noErrors] = useErrors(validate);
+    
     return(
         <form 
         onSubmit={(e)=>{
             e.preventDefault();
-            onFormSubmit({name, lastname, ssn, offers, newsletter});
+            if(noErrors()){
+                onFormSubmit({name, lastname, ssn, offers, newsletter});
+            }
         }}
         >
             <TextField
@@ -22,6 +28,7 @@ function PersonalData({onFormSubmit, checkSSN}){
                 setName(e.target.value);
             }} 
             id="name" 
+            name="name"
             label="Name" 
             variant="outlined"
             fullWidth
@@ -34,23 +41,23 @@ function PersonalData({onFormSubmit, checkSSN}){
                 setLastname(e.target.value);
             }}  
             id="lastname" 
+            name="lastname"
             label="Last name" 
             variant="outlined"
             fullWidth
             required={true}
             margin="normal"/>
             
-            <TextField id="ssn" 
+            <TextField 
+            id="ssn" 
             value={ssn}
             onChange={(e)=>{
                 setSsn(e.target.value)
             }}
-            onBlur={(e)=>{
-                const validSSN = checkSSN(ssn);
-                setError({ssn: validSSN})
-            }}
-            error={!error.ssn.valid}
-            helperText={error.ssn.msg}
+            onBlur={validateInput}
+            name="ssn"
+            error={!errors.ssn.valid}
+            helperText={errors.ssn.msg}
             label="Social Security Number" 
             variant="outlined"
             fullWidth

@@ -4,7 +4,7 @@ import UserData from './UserData';
 import DeliveryData from './DeliveryData';
 import {Typography, Stepper, StepLabel, Step} from '@material-ui/core';
 
-function SignUpForm({onFormSubmit, checkSSN}){
+function SignUpForm({onFormSubmit}){
     const[stage, setStage] = useState(0);
     const[capturedData, setCapturedData] = useState({});
     useEffect(()=>{
@@ -14,7 +14,7 @@ function SignUpForm({onFormSubmit, checkSSN}){
 
     const formPages=[
         <UserData onFormSubmit={captureData}/>,
-        <PersonalData onFormSubmit={captureData} checkSSN={checkSSN}/>,
+        <PersonalData onFormSubmit={captureData}/>,
         <DeliveryData onFormSubmit={captureData}/>,
         <Typography variant="h5" align="center">Thanks for signing up!</Typography>
     ];

@@ -1,5 +1,5 @@
 import React,{useState} from 'react';
-import {TextField, Button} from "@material-ui/core"
+import {TextField, Button} from "@material-ui/core";
 
 function DeliveryData({onFormSubmit}){
     const [street, setStreet] = useState("");
